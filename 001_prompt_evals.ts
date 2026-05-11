@@ -28,6 +28,8 @@ interface ChatOptions {
 
 interface DatasetItem {
   task: string;
+  format: "python" | "json" | "regex";
+  solution_criteria: string;
 }
 
 // ── Helper functions ────────────────────────────────────────────────────────
@@ -71,7 +73,8 @@ Example output:
 [
     {
         "task": "Description of task",
-        "format: "python" or "json" or "regex"
+        "format: "python" or "json" or "regex",
+        "solution_criteria: "Key criteria for evaluating the solution"
     },
     ...additional
 ]
@@ -133,6 +136,11 @@ Solution to Evaluate:
 <solution>
 ${output}
 </solution>
+
+Criteria you should use to evaluate the solution:
+<criteria>
+${test_case["solution_criteria"]}
+</criteria>
 
 Output Format
 Provide your evaluation as a structured JSON object with the following fields, in this specific order:

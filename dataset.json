@@ -1,14 +1,17 @@
 [
   {
-    "task": "Parse an AWS S3 bucket name from an S3 URI (e.g., 's3://my-bucket/path/to/file.txt') and extract just the bucket name",
-    "format": "regex"
+    "task": "Parse an AWS CloudWatch log entry and extract the timestamp, log level, and message using a regular expression",
+    "format": "regex",
+    "solution_criteria": "The regex should correctly capture timestamp in ISO 8601 format, log level (INFO, ERROR, WARNING, DEBUG), and the remaining message text from a CloudWatch log line"
   },
   {
-    "task": "Create a JSON CloudFormation template snippet that defines an AWS Lambda function with basic execution role and environment variables",
-    "format": "json"
+    "task": "Write a Python function that takes an AWS S3 bucket name and returns True if it follows AWS naming conventions (lowercase, 3-63 characters, no consecutive hyphens)",
+    "format": "python",
+    "solution_criteria": "Function should validate all S3 bucket naming rules and return a boolean. Should handle edge cases like buckets starting/ending with hyphens or numbers"
   },
   {
-    "task": "Write a Python function that takes an AWS IAM policy document (as a dict) and returns a list of all Action permissions granted",
-    "format": "python"
+    "task": "Create a JSON configuration object for an AWS Lambda environment that specifies runtime as Python 3.11, timeout of 60 seconds, memory of 512 MB, and includes environment variables for DATABASE_URL and API_KEY",
+    "format": "json",
+    "solution_criteria": "JSON should be valid AWS Lambda configuration format with correct key names, proper data types for numeric values, and all required fields properly structured"
   }
 ]

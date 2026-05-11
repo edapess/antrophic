@@ -1,61 +1,63 @@
 [
   {
-    "output": "\nimport re\n\ndef extract_s3_bucket_name(s3_uri):\n    \"\"\"Extract bucket name from S3 URI\"\"\"\n    match = re.match(r's3://([^/]+)', s3_uri)\n    return match.group(1) if match else None\n",
+    "output": "\nimport re\nimport json\n\ndef parse_cloudwatch_log(log_entry):\n    # CloudWatch log format: TIMESTAMP LOG_LEVEL MESSAGE\n    # Example: 2024-01-15T10:30:45.123Z ERROR Something went wrong\n    pattern = r'(?P<timestamp>\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d+Z)\\s+(?P<log_level>\\w+)\\s+(?P<message>.*)'\n    \n    match = re.match(pattern, log_entry)\n    \n    if match:\n        return {\n            'timestamp': match.group('timestamp'),\n            'log_level': match.group('log_level'),\n            'message': match.group('message')\n        }\n    return None\n\n# Test with sample CloudWatch log entry\nlog_entry = \"2024-01-15T10:30:45.123Z ERROR Something went wrong in the application\"\nresult = parse_cloudwatch_log(log_entry)\nprint(json.dumps(result, indent=2))\n",
     "test_case": {
-      "task": "Parse an AWS S3 bucket name from an S3 URI (e.g., 's3://my-bucket/path/to/file.txt') and extract just the bucket name",
-      "format": "regex"
+      "task": "Parse an AWS CloudWatch log entry and extract the timestamp, log level, and message using a regular expression",
+      "format": "regex",
+      "solution_criteria": "The regex should correctly capture timestamp in ISO 8601 format, log level (INFO, ERROR, WARNING, DEBUG), and the remaining message text from a CloudWatch log line"
     },
     "score": 3.5,
-    "reasoning": "The solution correctly solves the core task for well-formed S3 URIs. However, it lacks defensive programming practices expected in production AWS code. It assumes valid input and doesn't validate bucket name constraints per AWS specifications. Adding input type checking, format validation, and explicit error handling would significantly improve robustness.",
+    "reasoning": "The solution correctly implements the core requirement of parsing CloudWatch logs with regex and extracting the three specified fields. The ISO 8601 timestamp pattern is accurate and the named groups improve readability. However, the log_level validation is insufficiently strict - it should match against an explicit list of valid log levels rather than accepting any word. The solution lacks defensive programming practices such as input validation and comprehensive test coverage. For production use, stricter pattern matching and error handling would be needed.",
     "strengths": [
-      "Simple and efficient regex pattern that correctly matches the S3 URI format and extracts the bucket name",
-      "Includes null-safety by checking if the match exists before accessing group(1)",
-      "Clean, readable code with a docstring"
+      "Regex pattern correctly captures ISO 8601 timestamp format with namedgroups for clarity and maintainability",
+      "Solution properly extracts all three required fields (timestamp, log_level, message) and returns structured dictionary",
+      "Includes practical example demonstrating the function works with realistic CloudWatch log format"
     ],
     "weaknesses": [
-      "No input validation - doesn't handle None, empty strings, or non-string inputs, which would raise exceptions",
-      "Regex doesn't validate S3 bucket name constraints (3-63 chars, lowercase alphanumeric with hyphens, no consecutive hyphens, no leading/trailing hyphens)",
-      "Missing error handling and no distinction between invalid format vs. invalid bucket name; doesn't handle alternative S3 URI formats like 's3a://' or virtual-hosted-style URIs"
+      "Regex log_level pattern (\\w+) is too permissive - accepts any word characters instead of validating against actual CloudWatch levels (INFO, ERROR, WARNING, DEBUG, etc.)",
+      "No input validation or error handling for edge cases like None/empty input, malformed entries, or whitespace variations",
+      "Missing test cases for failure scenarios and edge cases (e.g., missing fields, extra whitespace, non-standard timestamps)"
     ],
     "syntax_score": 0
   },
   {
-    "output": "\n{\n  \"AWSTemplateFormatVersion\": \"2010-09-09\",\n  \"Resources\": {\n    \"LambdaExecutionRole\": {\n      \"Type\": \"AWS::IAM::Role\",\n      \"Properties\": {\n        \"AssumeRolePolicyDocument\": {\n          \"Version\": \"2012-10-17\",\n          \"Statement\": [\n            {\n              \"Effect\": \"Allow\",\n              \"Principal\": {\n                \"Service\": \"lambda.amazonaws.com\"\n              },\n              \"Action\": \"sts:AssumeRole\"\n            }\n          ]\n        },\n        \"ManagedPolicyArns\": [\n          \"arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole\"\n        ]\n      }\n    },\n    \"LambdaFunction\": {\n      \"Type\": \"AWS::Lambda::Function\",\n      \"Properties\": {\n        \"FunctionName\": \"MyLambdaFunction\",\n        \"Runtime\": \"python3.11\",\n        \"Handler\": \"index.lambda_handler\",\n        \"Role\": {\n          \"Fn::GetAtt\": [\n            \"LambdaExecutionRole\",\n            \"Arn\"\n          ]\n        },\n        \"Code\": {\n          \"ZipFile\": \"def lambda_handler(event, context):\\n    return {'statusCode': 200, 'body': 'Hello World'}\"\n        },\n        \"Environment\": {\n          \"Variables\": {\n            \"ENV_VAR_1\": \"value1\",\n            \"ENV_VAR_2\": \"value2\",\n            \"LOG_LEVEL\": \"INFO\"\n          }\n        },\n        \"Timeout\": 30,\n        \"MemorySize\": 128\n      }\n    }\n  },\n  \"Outputs\": {\n    \"LambdaFunctionArn\": {\n      \"Value\": {\n        \"Fn::GetAtt\": [\n          \"LambdaFunction\",\n          \"Arn\"\n        ]\n      }\n    }\n  }\n}\n",
+    "output": "\nimport re\n\ndef is_valid_s3_bucket_name(bucket_name: str) -> bool:\n    \"\"\"\n    Validates if a bucket name follows AWS S3 naming conventions:\n    - Length: 3-63 characters\n    - Lowercase letters, numbers, dots, and hyphens only\n    - Must start and end with letter or number\n    - No consecutive hyphens\n    - No dots adjacent to hyphens\n    - Not formatted as IP address\n    \"\"\"\n    if not bucket_name or not isinstance(bucket_name, str):\n        return False\n    \n    if len(bucket_name) < 3 or len(bucket_name) > 63:\n        return False\n    \n    if not re.match(r'^[a-z0-9]([a-z0-9.-]*[a-z0-9])?$', bucket_name):\n        return False\n    \n    if '--' in bucket_name:\n        return False\n    \n    if '.-' in bucket_name or '-.' in bucket_name:\n        return False\n    \n    if re.match(r'^(\\d{1,3}\\.){3}\\d{1,3}$', bucket_name):\n        return False\n    \n    return True\n",
     "test_case": {
-      "task": "Create a JSON CloudFormation template snippet that defines an AWS Lambda function with basic execution role and environment variables",
-      "format": "json"
+      "task": "Write a Python function that takes an AWS S3 bucket name and returns True if it follows AWS naming conventions (lowercase, 3-63 characters, no consecutive hyphens)",
+      "format": "python",
+      "solution_criteria": "Function should validate all S3 bucket naming rules and return a boolean. Should handle edge cases like buckets starting/ending with hyphens or numbers"
     },
-    "score": 9,
-    "reasoning": "This is a well-structured, functional CloudFormation template that successfully meets the core requirements of defining a Lambda function with an execution role and environment variables. The IAM setup is correct, the function configuration is sound, and it includes helpful additional properties like timeout and memory. However, the solution has minor production-readiness concerns: ZipFile is impractical for real applications, explicit dependencies could improve reliability, and parameterization would enhance reusability. These are typical areas where AI-generated infrastructure-as-code templates benefit from human review before deployment.",
+    "score": 3,
+    "reasoning": "The solution demonstrates strong understanding of most S3 naming conventions and handles edge cases well. However, it incorrectly permits dots in bucket names, which contradicts AWS best practices and causes issues with virtual-hosted-style access. The IP address validation is also incomplete. These are significant issues that could cause validation to pass for names that AWS would reject or that would cause operational problems.",
     "strengths": [
-      "Correctly defines a complete, functional CloudFormation template with proper syntax and structure",
-      "Properly implements IAM role with correct AssumeRolePolicyDocument and attaches the appropriate AWSLambdaBasicExecutionRole managed policy",
-      "Includes environment variables, reasonable defaults (timeout, memory), inline code, and outputs - demonstrating a production-ready approach"
+      "Comprehensive validation covering all major AWS S3 naming rules (length, character set, consecutive hyphens, IP address format)",
+      "Proper input validation with type checking and null/empty string handling",
+      "Well-documented with clear docstring explaining all validation rules"
     ],
     "weaknesses": [
-      "Uses ZipFile for inline code which is only suitable for small functions; production deployments typically require S3-based code artifacts",
-      "Missing DependsOn attribute between LambdaFunction and LambdaExecutionRole, which could cause race conditions in some deployment scenarios",
-      "No error handling or validation - environment variable values are hardcoded and lack descriptions; could benefit from Parameters section for reusability"
+      "Regex pattern allows dots which AWS S3 actually restricts in most regions (dots break virtual-hosted-style URLs). The pattern should be `^[a-z0-9]([a-z0-9-]*[a-z0-9])?$` without the dot character",
+      "The IP address validation is incomplete - it checks format but doesn't validate that each octet is ≤ 255 (e.g., '999.999.999.999' would incorrectly pass)",
+      "Minor: Single-character bucket names like 'a' would fail the regex due to the `[a-z0-9.-]*` requiring at least 2 characters, but this is actually correct per AWS rules (minimum 3 chars) so implementation is fine"
     ],
-    "syntax_score": 10
+    "syntax_score": 0
   },
   {
-    "output": "\ndef extract_iam_actions(policy_document):\n    \"\"\"\n    Extracts all Action permissions from an AWS IAM policy document.\n    \n    Args:\n        policy_document (dict): AWS IAM policy document as a dictionary\n        \n    Returns:\n        list: List of all Action permissions granted\n    \"\"\"\n    actions = []\n    \n    if not isinstance(policy_document, dict):\n        return actions\n    \n    # Get the Statement array from the policy document\n    statements = policy_document.get('Statement', [])\n    \n    if not isinstance(statements, list):\n        return actions\n    \n    # Iterate through each statement\n    for statement in statements:\n        if not isinstance(statement, dict):\n            continue\n            \n        # Get the Effect to only include Allow statements (optional but common)\n        effect = statement.get('Effect', 'Allow')\n        \n        # Get the Action field - can be a string or a list\n        action_field = statement.get('Action', [])\n        \n        # Normalize to list\n        if isinstance(action_field, str):\n            actions.append(action_field)\n        elif isinstance(action_field, list):\n            actions.extend(action_field)\n    \n    return actions\n",
+    "output": "\n{\n  \"Runtime\": \"python3.11\",\n  \"Timeout\": 60,\n  \"MemorySize\": 512,\n  \"Environment\": {\n    \"Variables\": {\n      \"DATABASE_URL\": \"\",\n      \"API_KEY\": \"\"\n    }\n  }\n}\n",
     "test_case": {
-      "task": "Write a Python function that takes an AWS IAM policy document (as a dict) and returns a list of all Action permissions granted",
-      "format": "python"
+      "task": "Create a JSON configuration object for an AWS Lambda environment that specifies runtime as Python 3.11, timeout of 60 seconds, memory of 512 MB, and includes environment variables for DATABASE_URL and API_KEY",
+      "format": "json",
+      "solution_criteria": "JSON should be valid AWS Lambda configuration format with correct key names, proper data types for numeric values, and all required fields properly structured"
     },
-    "score": 8,
-    "reasoning": "The solution correctly extracts actions from well-formed IAM policies and handles common edge cases with defensive programming. However, it has a significant logical issue: it checks the Effect field but doesn't use it to filter results, making that check misleading. More importantly, it ignores NotAction and doesn't deduplicate results. For a comprehensive IAM permissions extractor, these gaps limit its usefulness for security auditing scenarios where both Allow and Deny actions matter.",
+    "score": 9,
+    "reasoning": "The solution correctly implements the core AWS Lambda configuration structure with all specified requirements (Python 3.11 runtime, 60-second timeout, 512 MB memory, and environment variable placeholders). The JSON is syntactically valid and uses proper AWS field naming conventions. However, the environment variables lack actual values, which limits practical usability. The configuration is functional but incomplete for a production-ready setup.",
     "strengths": [
-      "Robust input validation with type checking at multiple levels (dict, list, statement) prevents crashes on malformed input",
-      "Handles both string and list formats for Action field, correctly normalizing them into a single output list",
-      "Clear documentation with docstring explaining parameters, return type, and purpose"
+      "All required fields are present with correct AWS Lambda configuration key names (Runtime, Timeout, MemorySize, Environment)",
+      "Proper data types used: string for Runtime, integers for Timeout and MemorySize, nested object structure for Environment variables",
+      "Valid JSON syntax with correct nesting and formatting"
     ],
     "weaknesses": [
-      "Filters only 'Allow' statements by default without extracting them, losing 'Deny' actions that may be relevant for security analysis - should include both or make this configurable",
-      "Does not handle NotAction field, which is a valid alternative to Action in IAM policies that grants all actions except specified ones",
-      "Returns duplicate actions if they appear in multiple statements; no deduplication or option to return unique actions"
+      "Environment variables are empty strings - should contain actual values or documentation on how to populate them",
+      "Missing optional but recommended fields like Description, Handler, or Role that would make this a more complete Lambda configuration"
     ],
     "syntax_score": 10
   }
