@@ -1,0 +1,65 @@
+[
+  {
+    "output": "\nimport re\n\ndef parse_s3_uri(uri):\n    pattern = r's3://([^/]+)/(.*)'\n    match = re.match(pattern, uri)\n    if match:\n        bucket_name = match.group(1)\n        key = match.group(2)\n        return bucket_name, key\n    return None, None\n",
+    "test_case": {
+      "task": "Parse an AWS S3 bucket name and key from an S3 URI (e.g., 's3://my-bucket/path/to/file.txt') and return them as separate values",
+      "format": "regex",
+      "solution_criteria": "The regex must correctly extract the bucket name and object key from valid S3 URIs, handling paths with multiple slashes and file extensions"
+    },
+    "score": 3.5,
+    "reasoning": "The solution meets the core requirement of parsing bucket names and keys from valid S3 URIs using an appropriate regex pattern. The pattern `s3://([^/]+)/(.*)` correctly captures everything before the first slash as the bucket and everything after as the key. However, the implementation lacks robustness for edge cases and doesn't validate AWS S3 naming constraints. For production use, it should handle URIs without explicit keys and validate bucket names, but for basic parsing tasks it functions correctly.",
+    "strengths": [
+      "Regex pattern correctly extracts bucket name and key from valid S3 URIs",
+      "Handles paths with multiple slashes and file extensions as required",
+      "Simple, readable implementation with appropriate error handling via None returns"
+    ],
+    "weaknesses": [
+      "Does not validate S3 bucket naming rules (e.g., 3-63 characters, lowercase/hyphens only, no consecutive hyphens)",
+      "No handling for edge cases like S3 URIs without keys (e.g., 's3://my-bucket/') or URIs with trailing slashes",
+      "Missing input validation for None/empty strings, which would cause regex to fail silently"
+    ],
+    "syntax_score": 0
+  },
+  {
+    "output": "\n{\n  \"FunctionName\": \"my-lambda-function\",\n  \"Runtime\": \"python3.11\",\n  \"MemorySize\": 256,\n  \"Timeout\": 30,\n  \"Environment\": {\n    \"Variables\": {\n      \"DB_HOST\": \"database.example.com\",\n      \"DB_PORT\": \"5432\",\n      \"DB_USER\": \"admin\",\n      \"DB_PASSWORD\": \"secure_password\",\n      \"DB_NAME\": \"mydb\"\n    }\n  }\n}\n",
+    "test_case": {
+      "task": "Create a JSON configuration object for an AWS Lambda function that specifies the function name, runtime (Python 3.11), memory (256 MB), timeout (30 seconds), and environment variables for database credentials",
+      "format": "json",
+      "solution_criteria": "The JSON must be valid, include all required Lambda configuration fields, and properly structure nested environment variables"
+    },
+    "score": 7.5,
+    "reasoning": "The JSON is syntactically valid and structurally correct according to AWS Lambda configuration requirements. However, it contains a significant security vulnerability by exposing database credentials in plaintext configuration. This is a production-critical issue that violates AWS security best practices. The solution meets the technical structural requirements but fails on security best practices that should be non-negotiable for any configuration handling credentials.",
+    "strengths": [
+      "Valid JSON structure with all required Lambda configuration fields (FunctionName, Runtime, MemorySize, Timeout, Environment)",
+      "Correctly nested environment variables under Environment.Variables object following AWS Lambda API specification",
+      "Appropriate values for runtime (python3.11), memory (256 MB), and timeout (30 seconds) as requested"
+    ],
+    "weaknesses": [
+      "Critical security issue: database credentials (password, host, username) are hardcoded in plaintext instead of using AWS Secrets Manager or Systems Manager Parameter Store",
+      "DB_PORT should be an integer (5432) rather than a string, though this is a minor type inconsistency",
+      "No mention of encryption, IAM role, or other security best practices for handling sensitive data"
+    ],
+    "syntax_score": 10
+  },
+  {
+    "output": "\nimport json\nfrom typing import Dict, Any\n\ndef extract_cloudwatch_log_event(event: Dict[str, Any]) -> Dict[str, Any]:\n    \"\"\"\n    Extracts log message, timestamp, and log stream name from AWS CloudWatch log event.\n    \n    Args:\n        event: AWS CloudWatch log event dictionary\n        \n    Returns:\n        Dictionary containing 'message', 'timestamp', and 'log_stream_name'\n    \"\"\"\n    result = {}\n    \n    # Extract from awslogs.data structure\n    if 'awslogs' in event:\n        import base64\n        import gzip\n        \n        log_data = json.loads(\n            gzip.decompress(\n                base64.b64decode(event['awslogs']['data'])\n            )\n        )\n        \n        result['log_stream_name'] = log_data.get('logStream', '')\n        \n        # Get the first log event's message and timestamp\n        if log_data.get('logEvents'):\n            first_event = log_data['logEvents'][0]\n            result['message'] = first_event.get('message', '')\n            result['timestamp'] = first_event.get('timestamp', '')\n    else:\n        # Handle direct event structure\n        result['message'] = event.get('message', '')\n        result['timestamp'] = event.get('timestamp', '')\n        result['log_stream_name'] = event.get('logStream', '')\n    \n    return result\n",
+    "test_case": {
+      "task": "Write a Python function that takes an AWS CloudWatch log event and extracts the log message, timestamp, and log stream name, returning them as a dictionary",
+      "format": "python",
+      "solution_criteria": "The function must correctly parse the CloudWatch event structure, handle missing fields gracefully, and return a dictionary with the three specified keys"
+    },
+    "score": 3.5,
+    "reasoning": "The solution correctly addresses the core task and handles the standard CloudWatch subscription filter event format with appropriate decompression logic. The graceful handling of missing fields and alternative event structures shows good defensive programming. However, it lacks robust error handling for common failure scenarios (corrupted data, invalid base64, malformed JSON) which would cause unhandled exceptions in production. The import placement and single-event extraction without documentation are minor but notable code quality issues. The solution works for typical use cases but needs hardening for production environments.",
+    "strengths": [
+      "Correctly handles the standard AWS CloudWatch Logs subscription filter format with base64/gzip decompression",
+      "Implements graceful degradation with fallback logic for direct event structures",
+      "Properly uses type hints and includes clear docstring explaining parameters and return values"
+    ],
+    "weaknesses": [
+      "Imports base64 and gzip inside the conditional block instead of at module level, reducing readability and efficiency",
+      "Does not validate or handle potential exceptions (e.g., base64 decode errors, gzip decompression failures, malformed JSON)",
+      "Extracts only the first log event when logEvents array may contain multiple events; no indication this is intentional or documented"
+    ],
+    "syntax_score": 0
+  }
+]

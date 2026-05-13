@@ -1,0 +1,8 @@
+{
+  "name": "anthropic-prompt-evals",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "DOTENV_CONFIG_PATH=../.env tsx src/index.ts"
+  }
+}

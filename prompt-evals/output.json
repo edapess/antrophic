@@ -1,0 +1,65 @@
+[
+  {
+    "output": "Here is a one-day meal plan for an athlete aiming to carbohydrate-load for marathon performance optimization:\n\n* **Calorie Target:** Approximately 3,200 calories\n* **Macronutrient Breakdown:** Protein (120g), Fat (80g), Carbs (480g)\n\n**Meal Plan:**\n\n* **Breakfast (7:00 AM):** Oatmeal (100g dry weight) with banana (150g), honey (20g), and whole milk (240g). Side of whole wheat toast (60g) with almond butter (15g).\n  * Protein: 18g, Fat: 12g, Carbs: 95g\n\n* **Mid-Morning Snack (10:00 AM):** Bagel (90g) with cream cheese (20g) and jam (25g). Orange juice (250ml).\n  * Protein: 10g, Fat: 8g, Carbs: 75g\n\n* **Lunch (1:00 PM):** Grilled chicken breast (130g) with pasta (120g dry weight cooked) in tomato-based sauce (100g). Side salad with olive oil dressing (15g).\n  * Protein: 45g, Fat: 15g, Carbs: 110g\n\n* **Afternoon Snack (3:30 PM):** Rice cakes (50g) with peanut butter (25g) and a sports drink (500ml, 6% carbs).\n  * Protein: 12g, Fat: 12g, Carbs: 95g\n\n* **Dinner (6:30 PM):** Lean ground beef (120g) with white rice (150g dry weight cooked) and steamed carrots (150g). Whole wheat roll (50g).\n  * Protein: 28g, Fat: 15g, Carbs: 85g\n\n* **Evening Snack (8:30 PM):** Energy bar (60g) or granola with yogurt (150g).\n  * Protein: 10g, Fat: 8g, Carbs: 40g\n\nThis meal plan emphasizes high-quality carbohydrates from whole grains, fruits, and starchy vegetables to maximize glycogen storage while maintaining adequate protein for muscle recovery and repair.",
+    "test_case": {
+      "prompt_inputs": {
+        "height": "178",
+        "weight": "68",
+        "goal": "Carbohydrate-loading for marathon performance optimization",
+        "restrictions": "None"
+      },
+      "solution_criteria": [
+        "Meal plan covers one full day with breakfast, lunch, dinner, and snacks",
+        "Emphasizes high carbohydrate intake (60-65% of calories) suitable for endurance training",
+        "Includes approximate caloric content aligned with athlete's energy expenditure",
+        "Meals are practical, compact, and listed concisely without excessive detail"
+      ],
+      "task_description": "Write a compact, concise 1 day meal plan for a single athlete",
+      "scenario": "Testing with a lightweight endurance athlete (marathon runner) with high caloric needs, minimal dietary restrictions, and focus on carbohydrate-loading for performance optimization"
+    },
+    "score": 9,
+    "reasoning": "The solution fully satisfies all three mandatory requirements with clear presentation of daily totals, macro breakdown, and detailed meal specifications with portions and timing. It meets the secondary criteria by emphasizing high-carbohydrate intake appropriate for carb-loading, providing practical meals, and maintaining conciseness. The caloric estimate is reasonable for an athlete of this size preparing for a marathon, though slightly on the higher end. Minor mathematical inconsistencies between stated totals and meal-by-meal calculations are present but negligible. The plan successfully delivers a functional, athlete-appropriate carb-loading meal plan without unnecessary elaboration."
+  },
+  {
+    "output": "Here is a one-day meal plan for a vegan, gluten-free athlete aiming to build muscle:\n\n* **Calorie Target:** Approximately 3,200 calories\n* **Macronutrient Breakdown:** Protein (171g), Fat (107g), Carbs (380g)\n\n**Meal Plan:**\n\n* **Breakfast (7:00 AM):** Gluten-free oatmeal (80g dry weight) with plant-based milk (240g), banana (120g), peanut butter (30g), and ground flaxseed (15g).\n  * Protein: 18g, Fat: 16g, Carbs: 65g\n\n* **Mid-Morning Snack (10:00 AM):** Vegan protein smoothie with plant-based protein powder (30g), almond milk (240g), spinach (50g), and blueberries (100g).\n  * Protein: 25g, Fat: 8g, Carbs: 35g\n\n* **Lunch (1:00 PM):** Tofu stir-fry with extra-firm tofu (200g), mixed vegetables (broccoli 100g, bell peppers 80g, carrots 60g), brown rice (100g cooked), and sesame oil (15g).\n  * Protein: 38g, Fat: 18g, Carbs: 65g\n\n* **Afternoon Snack (4:00 PM):** Hummus (60g) with gluten-free crackers (40g) and raw veggies (cucumber 100g, tomato 80g).\n  * Protein: 12g, Fat: 12g, Carbs: 40g\n\n* **Dinner (7:00 PM):** Lentil and quinoa bowl (lentils 150g cooked, quinoa 75g cooked) with roasted sweet potato (150g), kale (100g), and tahini dressing (20g).\n  * Protein: 35g, Fat: 22g, Carbs: 95g\n\n* **Evening Snack (9:00 PM):** Vegan protein bar (50g) or almonds (25g) with dates (40g).\n  * Protein: 10g, Fat: 12g, Carbs: 25g\n\nThis meal plan prioritizes plant-based protein sources (tofu, lentils, quinoa, legumes, nuts, and seeds), provides adequate calories for muscle building, and eliminates all gluten-containing grains while maintaining balanced macronutrition throughout the day.",
+    "test_case": {
+      "prompt_inputs": {
+        "height": "178 cm",
+        "weight": "95 kg",
+        "goal": "muscle building with 1.8g protein per kg bodyweight",
+        "restrictions": "vegan, gluten-free"
+      },
+      "solution_criteria": [
+        "Meal plan covers all 3 meals for 1 day with specific foods and portions",
+        "Total daily protein meets or exceeds 171g (1.8g × 95kg) from vegan sources only",
+        "All foods are gluten-free and vegan with no animal products or gluten-containing ingredients",
+        "Macros are balanced appropriately for muscle-building goals"
+      ],
+      "task_description": "Write a compact, concise 1 day meal plan for a single athlete",
+      "scenario": "Testing with a heavyweight strength athlete (bodybuilder) with multiple dietary restrictions (vegan, gluten-free) and a muscle-building goal requiring precise macro balancing"
+    },
+    "score": 4,
+    "reasoning": "The solution meets the structural mandatory requirements by including daily caloric total, macronutrient breakdown, and 6 meals with specific foods, portions, and timing. However, there is a critical mathematical failure: the stated protein target of 171g is not actually achieved by the meal plan (only ~138g provided). This represents a 19% shortfall from the muscle-building requirement of 1.8g per kg bodyweight. Additionally, the caloric total appears miscalculated. While the vegan and gluten-free restrictions are properly respected, the failure to meet the primary nutritional goal (protein intake) violates a secondary criterion and undermines the plan's effectiveness for the stated purpose."
+  },
+  {
+    "output": "# One-Day Meal Plan for Boxing Weight Cut\n\nHere is a one-day meal plan for a boxer aiming to cut 2 kg within 24 hours while maintaining performance:\n\n* **Calorie Target:** Approximately 1,800 calories\n* **Macronutrient Breakdown:** Protein (135g), Fat (45g), Carbs (210g)\n\n**Meal Plan:**\n\n* **Breakfast (7:00 AM):** Egg white omelet (150g egg whites) with spinach (80g) and tomato (60g). Whole wheat toast (40g) with honey (10g). Green tea (240ml).\n    * Protein: 28g, Fat: 3g, Carbs: 20g\n\n* **Mid-Morning Snack (10:00 AM):** Rice cakes (30g) with lean turkey breast slices (50g) and mustard (5g). Apple (120g).\n    * Protein: 18g, Fat: 2g, Carbs: 28g\n\n* **Lunch (1:00 PM):** Grilled chicken breast (150g) with steamed white rice (100g cooked) and steamed carrots (150g). Lemon juice (10g).\n    * Protein: 42g, Fat: 4g, Carbs: 48g\n\n* **Afternoon Snack (4:00 PM):** Low-fat Greek yogurt (150g, 0% fat) with blueberries (80g) and a drizzle of honey (5g).\n    * Protein: 20g, Fat: 0g, Carbs: 28g\n\n* **Dinner (6:30 PM):** Baked white fish fillet (160g) with steamed potato (120g) and steamed green beans (200g). Salt and black pepper to taste.\n    * Protein: 35g, Fat: 2g, Carbs: 28g\n\n* **Evening Hydration (8:00 PM):** Water (500ml) - limit sodium intake to aid water loss. Black coffee (240ml, no sugar).\n    * Protein: 0g, Fat: 0g, Carbs: 0g\n\n---\n\n**Important Notes for Weight Cut:**\n- This plan creates a moderate calorie deficit while preserving muscle mass through high protein intake\n- Timing meals earlier (finish dinner by 6:30 PM) aids overnight weight loss\n- Avoid added salt after lunch to manage water retention\n- Hydrate consistently throughout the day, then taper fluid intake 3-4 hours before weigh-in\n- All foods avoid nuts and shellfish per restrictions\n- Consult with your boxing coach and nutritionist before implementing any weight cut protocol",
+    "test_case": {
+      "prompt_inputs": {
+        "height": "173 cm",
+        "weight": "68 kg",
+        "goal": "weight cut to 66 kg within 24 hours while maintaining performance for boxing match",
+        "restrictions": "no nuts, no shellfish"
+      },
+      "solution_criteria": [
+        "Meal plan is compact and covers one full day with clear meal timing",
+        "All meals comply with nut and shellfish restrictions",
+        "Plan supports moderate caloric deficit appropriate for 2 kg weight cut while maintaining athletic performance",
+        "Includes adequate protein for muscle preservation during weight cut"
+      ],
+      "task_description": "Write a compact, concise 1 day meal plan for a single athlete",
+      "scenario": "Testing with a sport-specific scenario: a lightweight combat athlete (boxer) with a weight-cut goal, specific caloric deficit requirements, and common allergen restrictions (nuts, shellfish)"
+    },
+    "score": 7,
+    "reasoning": "The solution meets all three mandatory requirements with clear formatting, exact portions, and timing. Restriction compliance is verified. However, the caloric deficit strategy appears medically questionable without exercise context, and there are internal mathematical inconsistencies in the macronutrient totals. The plan provides general weight-cut guidance but lacks the precision needed for safe rapid weight loss in combat sports. Despite these concerns, the mandatory criteria are technically satisfied."
+  }
+]

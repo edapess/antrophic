@@ -1,9 +1,12 @@
 {
-  "name": "anthropic-prompt-evals",
+  "name": "anthropic-projects",
   "version": "1.0.0",
-  "type": "module",
+  "private": true,
+  "workspaces": [
+    "prompt-evals"
+  ],
   "scripts": {
-    "start": "tsx 001_prompt_evals.ts"
+    "prompt-evals": "npm run start -w prompt-evals"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",

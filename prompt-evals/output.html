@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prompt Evaluation Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 20px; color: #333; }
+    .header { background-color: #f0f0f0; padding: 20px; border-radius: 5px; margin-bottom: 20px; }
+    .summary-stats { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+    .stat-box { background-color: #fff; border-radius: 5px; padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); flex-basis: 30%; min-width: 200px; }
+    .stat-value { font-size: 24px; font-weight: bold; margin-top: 5px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th { background-color: #4a4a4a; color: white; text-align: left; padding: 12px; }
+    td { padding: 10px; border-bottom: 1px solid #ddd; vertical-align: top; width: 20%; }
+    tr:nth-child(even) { background-color: #f9f9f9; }
+    .score { font-weight: bold; padding: 5px 10px; border-radius: 3px; display: inline-block; }
+    .score-high { background-color: #c8e6c9; color: #2e7d32; }
+    .score-medium { background-color: #fff9c4; color: #f57f17; }
+    .score-low { background-color: #ffcdd2; color: #c62828; }
+    .score-col { width: 80px; }
+    .output pre { background-color: #f5f5f5; border: 1px solid #ddd; border-radius: 4px; padding: 10px; margin: 0; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 14px; line-height: 1.4; color: #333; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Prompt Evaluation Report</h1>
+    <div class="summary-stats">
+      <div class="stat-box">
+        <div>Total Test Cases</div>
+        <div class="stat-value">3</div>
+      </div>
+      <div class="stat-box">
+        <div>Average Score</div>
+        <div class="stat-value">6.7 / 10</div>
+      </div>
+      <div class="stat-box">
+        <div>Pass Rate (≥7)</div>
+        <div class="stat-value">66.7%</div>
+      </div>
+    </div>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Scenario</th>
+        <th>Prompt Inputs</th>
+        <th>Solution Criteria</th>
+        <th>Output</th>
+        <th>Score</th>
+        <th>Reasoning</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Testing with a lightweight endurance athlete (marathon runner) with high caloric needs, minimal dietary restrictions, and focus on carbohydrate-loading for performance optimization</td>
+        <td class="prompt-inputs"><strong>height:</strong> 178<br><strong>weight:</strong> 68<br><strong>goal:</strong> Carbohydrate-loading for marathon performance optimization<br><strong>restrictions:</strong> None</td>
+        <td class="criteria">• Meal plan covers one full day with breakfast, lunch, dinner, and snacks<br>• Emphasizes high carbohydrate intake (60-65% of calories) suitable for endurance training<br>• Includes approximate caloric content aligned with athlete's energy expenditure<br>• Meals are practical, compact, and listed concisely without excessive detail</td>
+        <td class="output"><pre>Here is a one-day meal plan for an athlete aiming to carbohydrate-load for marathon performance optimization:
+
+* **Calorie Target:** Approximately 3,200 calories
+* **Macronutrient Breakdown:** Protein (120g), Fat (80g), Carbs (480g)
+
+**Meal Plan:**
+
+* **Breakfast (7:00 AM):** Oatmeal (100g dry weight) with banana (150g), honey (20g), and whole milk (240g). Side of whole wheat toast (60g) with almond butter (15g).
+  * Protein: 18g, Fat: 12g, Carbs: 95g
+
+* **Mid-Morning Snack (10:00 AM):** Bagel (90g) with cream cheese (20g) and jam (25g). Orange juice (250ml).
+  * Protein: 10g, Fat: 8g, Carbs: 75g
+
+* **Lunch (1:00 PM):** Grilled chicken breast (130g) with pasta (120g dry weight cooked) in tomato-based sauce (100g). Side salad with olive oil dressing (15g).
+  * Protein: 45g, Fat: 15g, Carbs: 110g
+
+* **Afternoon Snack (3:30 PM):** Rice cakes (50g) with peanut butter (25g) and a sports drink (500ml, 6% carbs).
+  * Protein: 12g, Fat: 12g, Carbs: 95g
+
+* **Dinner (6:30 PM):** Lean ground beef (120g) with white rice (150g dry weight cooked) and steamed carrots (150g). Whole wheat roll (50g).
+  * Protein: 28g, Fat: 15g, Carbs: 85g
+
+* **Evening Snack (8:30 PM):** Energy bar (60g) or granola with yogurt (150g).
+  * Protein: 10g, Fat: 8g, Carbs: 40g
+
+This meal plan emphasizes high-quality carbohydrates from whole grains, fruits, and starchy vegetables to maximize glycogen storage while maintaining adequate protein for muscle recovery and repair.</pre></td>
+        <td class="score-col"><span class="score score-high">9</span></td>
+        <td class="reasoning">The solution fully satisfies all three mandatory requirements with clear presentation of daily totals, macro breakdown, and detailed meal specifications with portions and timing. It meets the secondary criteria by emphasizing high-carbohydrate intake appropriate for carb-loading, providing practical meals, and maintaining conciseness. The caloric estimate is reasonable for an athlete of this size preparing for a marathon, though slightly on the higher end. Minor mathematical inconsistencies between stated totals and meal-by-meal calculations are present but negligible. The plan successfully delivers a functional, athlete-appropriate carb-loading meal plan without unnecessary elaboration.</td>
+      </tr>
+      <tr>
+        <td>Testing with a heavyweight strength athlete (bodybuilder) with multiple dietary restrictions (vegan, gluten-free) and a muscle-building goal requiring precise macro balancing</td>
+        <td class="prompt-inputs"><strong>height:</strong> 178 cm<br><strong>weight:</strong> 95 kg<br><strong>goal:</strong> muscle building with 1.8g protein per kg bodyweight<br><strong>restrictions:</strong> vegan, gluten-free</td>
+        <td class="criteria">• Meal plan covers all 3 meals for 1 day with specific foods and portions<br>• Total daily protein meets or exceeds 171g (1.8g × 95kg) from vegan sources only<br>• All foods are gluten-free and vegan with no animal products or gluten-containing ingredients<br>• Macros are balanced appropriately for muscle-building goals</td>
+        <td class="output"><pre>Here is a one-day meal plan for a vegan, gluten-free athlete aiming to build muscle:
+
+* **Calorie Target:** Approximately 3,200 calories
+* **Macronutrient Breakdown:** Protein (171g), Fat (107g), Carbs (380g)
+
+**Meal Plan:**
+
+* **Breakfast (7:00 AM):** Gluten-free oatmeal (80g dry weight) with plant-based milk (240g), banana (120g), peanut butter (30g), and ground flaxseed (15g).
+  * Protein: 18g, Fat: 16g, Carbs: 65g
+
+* **Mid-Morning Snack (10:00 AM):** Vegan protein smoothie with plant-based protein powder (30g), almond milk (240g), spinach (50g), and blueberries (100g).
+  * Protein: 25g, Fat: 8g, Carbs: 35g
+
+* **Lunch (1:00 PM):** Tofu stir-fry with extra-firm tofu (200g), mixed vegetables (broccoli 100g, bell peppers 80g, carrots 60g), brown rice (100g cooked), and sesame oil (15g).
+  * Protein: 38g, Fat: 18g, Carbs: 65g
+
+* **Afternoon Snack (4:00 PM):** Hummus (60g) with gluten-free crackers (40g) and raw veggies (cucumber 100g, tomato 80g).
+  * Protein: 12g, Fat: 12g, Carbs: 40g
+
+* **Dinner (7:00 PM):** Lentil and quinoa bowl (lentils 150g cooked, quinoa 75g cooked) with roasted sweet potato (150g), kale (100g), and tahini dressing (20g).
+  * Protein: 35g, Fat: 22g, Carbs: 95g
+
+* **Evening Snack (9:00 PM):** Vegan protein bar (50g) or almonds (25g) with dates (40g).
+  * Protein: 10g, Fat: 12g, Carbs: 25g
+
+This meal plan prioritizes plant-based protein sources (tofu, lentils, quinoa, legumes, nuts, and seeds), provides adequate calories for muscle building, and eliminates all gluten-containing grains while maintaining balanced macronutrition throughout the day.</pre></td>
+        <td class="score-col"><span class="score score-low">4</span></td>
+        <td class="reasoning">The solution meets the structural mandatory requirements by including daily caloric total, macronutrient breakdown, and 6 meals with specific foods, portions, and timing. However, there is a critical mathematical failure: the stated protein target of 171g is not actually achieved by the meal plan (only ~138g provided). This represents a 19% shortfall from the muscle-building requirement of 1.8g per kg bodyweight. Additionally, the caloric total appears miscalculated. While the vegan and gluten-free restrictions are properly respected, the failure to meet the primary nutritional goal (protein intake) violates a secondary criterion and undermines the plan's effectiveness for the stated purpose.</td>
+      </tr>
+      <tr>
+        <td>Testing with a sport-specific scenario: a lightweight combat athlete (boxer) with a weight-cut goal, specific caloric deficit requirements, and common allergen restrictions (nuts, shellfish)</td>
+        <td class="prompt-inputs"><strong>height:</strong> 173 cm<br><strong>weight:</strong> 68 kg<br><strong>goal:</strong> weight cut to 66 kg within 24 hours while maintaining performance for boxing match<br><strong>restrictions:</strong> no nuts, no shellfish</td>
+        <td class="criteria">• Meal plan is compact and covers one full day with clear meal timing<br>• All meals comply with nut and shellfish restrictions<br>• Plan supports moderate caloric deficit appropriate for 2 kg weight cut while maintaining athletic performance<br>• Includes adequate protein for muscle preservation during weight cut</td>
+        <td class="output"><pre># One-Day Meal Plan for Boxing Weight Cut
+
+Here is a one-day meal plan for a boxer aiming to cut 2 kg within 24 hours while maintaining performance:
+
+* **Calorie Target:** Approximately 1,800 calories
+* **Macronutrient Breakdown:** Protein (135g), Fat (45g), Carbs (210g)
+
+**Meal Plan:**
+
+* **Breakfast (7:00 AM):** Egg white omelet (150g egg whites) with spinach (80g) and tomato (60g). Whole wheat toast (40g) with honey (10g). Green tea (240ml).
+    * Protein: 28g, Fat: 3g, Carbs: 20g
+
+* **Mid-Morning Snack (10:00 AM):** Rice cakes (30g) with lean turkey breast slices (50g) and mustard (5g). Apple (120g).
+    * Protein: 18g, Fat: 2g, Carbs: 28g
+
+* **Lunch (1:00 PM):** Grilled chicken breast (150g) with steamed white rice (100g cooked) and steamed carrots (150g). Lemon juice (10g).
+    * Protein: 42g, Fat: 4g, Carbs: 48g
+
+* **Afternoon Snack (4:00 PM):** Low-fat Greek yogurt (150g, 0% fat) with blueberries (80g) and a drizzle of honey (5g).
+    * Protein: 20g, Fat: 0g, Carbs: 28g
+
+* **Dinner (6:30 PM):** Baked white fish fillet (160g) with steamed potato (120g) and steamed green beans (200g). Salt and black pepper to taste.
+    * Protein: 35g, Fat: 2g, Carbs: 28g
+
+* **Evening Hydration (8:00 PM):** Water (500ml) - limit sodium intake to aid water loss. Black coffee (240ml, no sugar).
+    * Protein: 0g, Fat: 0g, Carbs: 0g
+
+---
+
+**Important Notes for Weight Cut:**
+- This plan creates a moderate calorie deficit while preserving muscle mass through high protein intake
+- Timing meals earlier (finish dinner by 6:30 PM) aids overnight weight loss
+- Avoid added salt after lunch to manage water retention
+- Hydrate consistently throughout the day, then taper fluid intake 3-4 hours before weigh-in
+- All foods avoid nuts and shellfish per restrictions
+- Consult with your boxing coach and nutritionist before implementing any weight cut protocol</pre></td>
+        <td class="score-col"><span class="score score-medium">7</span></td>
+        <td class="reasoning">The solution meets all three mandatory requirements with clear formatting, exact portions, and timing. Restriction compliance is verified. However, the caloric deficit strategy appears medically questionable without exercise context, and there are internal mathematical inconsistencies in the macronutrient totals. The plan provides general weight-cut guidance but lacks the precision needed for safe rapid weight loss in combat sports. Despite these concerns, the mandatory criteria are technically satisfied.</td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>

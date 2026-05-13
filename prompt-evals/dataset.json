@@ -1,0 +1,50 @@
+[
+  {
+    "prompt_inputs": {
+      "height": "178",
+      "weight": "68",
+      "goal": "Carbohydrate-loading for marathon performance optimization",
+      "restrictions": "None"
+    },
+    "solution_criteria": [
+      "Meal plan covers one full day with breakfast, lunch, dinner, and snacks",
+      "Emphasizes high carbohydrate intake (60-65% of calories) suitable for endurance training",
+      "Includes approximate caloric content aligned with athlete's energy expenditure",
+      "Meals are practical, compact, and listed concisely without excessive detail"
+    ],
+    "task_description": "Write a compact, concise 1 day meal plan for a single athlete",
+    "scenario": "Testing with a lightweight endurance athlete (marathon runner) with high caloric needs, minimal dietary restrictions, and focus on carbohydrate-loading for performance optimization"
+  },
+  {
+    "prompt_inputs": {
+      "height": "178 cm",
+      "weight": "95 kg",
+      "goal": "muscle building with 1.8g protein per kg bodyweight",
+      "restrictions": "vegan, gluten-free"
+    },
+    "solution_criteria": [
+      "Meal plan covers all 3 meals for 1 day with specific foods and portions",
+      "Total daily protein meets or exceeds 171g (1.8g × 95kg) from vegan sources only",
+      "All foods are gluten-free and vegan with no animal products or gluten-containing ingredients",
+      "Macros are balanced appropriately for muscle-building goals"
+    ],
+    "task_description": "Write a compact, concise 1 day meal plan for a single athlete",
+    "scenario": "Testing with a heavyweight strength athlete (bodybuilder) with multiple dietary restrictions (vegan, gluten-free) and a muscle-building goal requiring precise macro balancing"
+  },
+  {
+    "prompt_inputs": {
+      "height": "173 cm",
+      "weight": "68 kg",
+      "goal": "weight cut to 66 kg within 24 hours while maintaining performance for boxing match",
+      "restrictions": "no nuts, no shellfish"
+    },
+    "solution_criteria": [
+      "Meal plan is compact and covers one full day with clear meal timing",
+      "All meals comply with nut and shellfish restrictions",
+      "Plan supports moderate caloric deficit appropriate for 2 kg weight cut while maintaining athletic performance",
+      "Includes adequate protein for muscle preservation during weight cut"
+    ],
+    "task_description": "Write a compact, concise 1 day meal plan for a single athlete",
+    "scenario": "Testing with a sport-specific scenario: a lightweight combat athlete (boxer) with a weight-cut goal, specific caloric deficit requirements, and common allergen restrictions (nuts, shellfish)"
+  }
+]
