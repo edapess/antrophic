@@ -3,18 +3,21 @@
   "version": "1.0.0",
   "private": true,
   "workspaces": [
-    "prompt-evals"
+    "prompt-evals",
+    "tools"
   ],
   "scripts": {
-    "prompt-evals": "npm run start -w prompt-evals"
+    "prompt-evals": "npm run start -w prompt-evals",
+    "tools": "npm run start -w tools"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
+    "dayjs": "^1.11.20",
     "dotenv": "^16.0.0"
   },
   "devDependencies": {
-    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0",
     "tsx": "^4.0.0",
-    "@types/node": "^20.0.0"
+    "typescript": "^5.0.0"
   }
 }
